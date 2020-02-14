@@ -1,1 +1,2 @@
-# assignment-gartner
+# solution_jay_singh
+

@@ -41,7 +41,7 @@ const getExpensiveClick = (startIndex, maxClick, clicksArray) => {
     let maxElement = maxClick;
     let startTime = `${maxClick.timestamp.split(':')[0]}:00:00`;
     if (startIndex >= clicksArray.length && isValidIpForResultSet(maxElement, clicksArray)) {
-        return { maxElement, startIndex }
+        return { maxElement, innerIndex: startIndex }
     } else {
         for (let innerIndex = startIndex; innerIndex < clicksArray.length; innerIndex++) {
             const innerElement = clicksArray[innerIndex];
@@ -57,6 +57,7 @@ const getExpensiveClick = (startIndex, maxClick, clicksArray) => {
                 }
             }
         }
+        return { maxElement, innerIndex: (clicksArray.length - 1) }
     }
 }
 
@@ -66,23 +67,24 @@ const getResultSet = (clicks) => {
     for (let index = 0; index < clicks.length; index++) {
         const currentClick = clicks[index];
         if (isValidIpForResultSet(currentClick, clicks)) {
-            const expensiveClick = getExpensiveClick(index + 1, currentClick, clicks)
+            const expensiveClick = getExpensiveClick(index + 1, currentClick, clicks);
             if (expensiveClick && expensiveClick.innerIndex && expensiveClick.maxElement) {
                 index = expensiveClick.innerIndex
                 resultSet.push(expensiveClick.maxElement)
             }
         }
     }
+
     return resultSet;
 }
 
-const validateClicksArray=(clicks)=>{
-    if(Array.isArray(clicks) && clicks.length>0){
+const validateClicksArray = (clicks) => {
+    if (Array.isArray(clicks) && clicks.length > 0) {
         return true;
     }
     return false
 }
-module.exports ={
+module.exports = {
     getTimeDifference,
     isValidIpForResultSet,
     getExpensiveClick,
